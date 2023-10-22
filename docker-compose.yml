@@ -11,5 +11,6 @@ services:
       TOKEN: ${TOKEN}
       SERVER_ID: ${SERVER_ID}
       PORT: ${PORT}
+      RATELIMIT_MAX_RPS: ${RATELIMIT_MAX_RPS}
     ports:
       - 3000:3000
