@@ -102,9 +102,9 @@ app.get('/', async (req, res) => {
     }
 
     const message = req.query.message;
-    const conversationID = req.query.conversationID;
+    const originalConversationID = req.query.conversationID;
 
-    if (!message || !conversationID) {
+    if (!message || !originalConversationID) {
         res.status(400).json({
             error: 'Please provide a message and conversationID',
         });
@@ -118,14 +118,14 @@ app.get('/', async (req, res) => {
         return;
     }
 
-    if (typeof conversationID !== 'string' || conversationID.length === 0 || conversationID.length > 32 || !/^[a-zA-Z0-9]+$/.test(conversationID)) {
+    if (typeof originalConversationID !== 'string' || originalConversationID.length === 0 || originalConversationID.length > 32 || !/^[a-zA-Z0-9]+$/.test(originalConversationID)) {
         res.status(400).json({
             error: 'Invalid conversationID. Must be a string with only letters and numbers, no spaces, and no more than 32 characters',
         });
         return;
     }
 
-    conversationID = conversationID.toLowerCase();
+    const conversationID = originalConversationID.toLowerCase();
 
     let channel = await getChannelByName(process.env.SERVER_ID, conversationID);
     if (!channel) {
@@ -146,6 +146,7 @@ app.get('/', async (req, res) => {
         response: response,
     });
 });
+
 
 app.delete('/', async (req, res) => {
     if (!discord_ready) {
