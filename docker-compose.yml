@@ -10,7 +10,6 @@ services:
       NODE_ENV: production
       TOKEN: ${TOKEN}
       SERVER_ID: ${SERVER_ID}
-      PORT: ${PORT}
       RATELIMIT_MAX_RPS: ${RATELIMIT_MAX_RPS}
     ports:
       - 8080:8080
