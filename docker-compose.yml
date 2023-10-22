@@ -1,0 +1,15 @@
+version: '3.4'
+
+services:
+  discordclydeapi:
+    image: discordclydeapi
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    environment:
+      NODE_ENV: production
+      TOKEN: ${TOKEN}
+      SERVER_ID: ${SERVER_ID}
+      PORT: ${PORT}
+    ports:
+      - 3000:3000
