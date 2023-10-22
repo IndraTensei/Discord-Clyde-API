@@ -217,4 +217,4 @@ fastify.delete('/', async (request, reply) => {
 // Login to Discord
 client.login(process.env.TOKEN);
 // Start Fastify
-fastify.listen({ port: process.env.PORT || 3000 });
+fastify.listen({ port: 8080 });
