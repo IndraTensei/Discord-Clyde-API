@@ -1,10 +1,20 @@
-FROM node:18
-ENV NODE_ENV=production
-WORKDIR /usr/src/app
-COPY ["package.json", "package-lock.json*", "npm-shrinkwrap.json*", "./"]
-RUN npm install --production --silent && mv node_modules ../
-COPY . .
+# Use an official Node.js runtime as a parent image
+FROM node:14
+
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy package.json and package-lock.json to the working directory
+COPY package*.json ./
+
+# Install project dependencies using npm
+RUN npm install
+
+# Expose port 3000 for the application
 EXPOSE 8080
-RUN chown -R node /usr/src/app
-USER node
+
+# Copy the rest of the application code to the working directory
+COPY . .
+
+# Define the command to start the application
 CMD ["npm", "start"]
