@@ -13,4 +13,4 @@ services:
       PORT: ${PORT}
       RATELIMIT_MAX_RPS: ${RATELIMIT_MAX_RPS}
     ports:
-      - 3000:3000
+      - 8080:8080
