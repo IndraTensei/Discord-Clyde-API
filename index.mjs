@@ -102,7 +102,7 @@ app.get('/', async (req, res) => {
     }
 
     const message = req.query.message;
-    const conversationID = req.query.conversationID.toLowerCase();
+    const conversationID = req.query.conversationID;
 
     if (!message || !conversationID) {
         res.status(400).json({
@@ -118,12 +118,14 @@ app.get('/', async (req, res) => {
         return;
     }
 
-    if (!/^[a-zA-Z0-9]{1,32}$/.test(conversationID)) {
+    if (typeof conversationID !== 'string' || conversationID.length === 0 || conversationID.length > 32 || !/^[a-zA-Z0-9]+$/.test(conversationID)) {
         res.status(400).json({
-            error: 'Invalid conversationID. Must be a string with only letters and numbers, no spaces and no more than 32 characters',
+            error: 'Invalid conversationID. Must be a string with only letters and numbers, no spaces, and no more than 32 characters',
         });
         return;
     }
+
+    conversationID = conversationID.toLowerCase();
 
     let channel = await getChannelByName(process.env.SERVER_ID, conversationID);
     if (!channel) {
