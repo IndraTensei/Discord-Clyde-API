@@ -1,8 +1,8 @@
 version: '3.4'
 
 services:
-  discordclydeapi:
-    image: discordclydeapi
+  qin-guru:
+    image: qin-guru
     build:
       context: .
       dockerfile: ./Dockerfile
