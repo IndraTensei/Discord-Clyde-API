@@ -235,7 +235,7 @@ app.get('/dm', async (req, res) => {
     });
 });
 
-client.login('NjI0MTMzMDUwMjI5NDU2OTE1.G0hRbf.Y9TS6tjGnn1sSg2nNfyILOGhY1oIvG1QoigcuQ');
+client.login(process.env.TOKEN);
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
