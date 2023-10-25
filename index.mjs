@@ -17,7 +17,7 @@ client.once('ready', async () => {
     console.log(`Logged in as ${client.user.tag}!`);
     discord_ready = true;
     // Prune channels on startup
-    pruneChannels('1050431248163672106');
+    pruneChannels(process.env.SERVER_ID);
 });
 
 async function sendMessageToChannel(id, message) {
@@ -96,7 +96,7 @@ async function clydedm(message) {
 }
 
 setInterval(() => {
-    pruneChannels('1050431248163672106');
+    pruneChannels(process.env.SERVER_ID);
 }, 15 * 60 * 1000);
 
 app.use(cors());
@@ -152,9 +152,9 @@ app.get('/', async (req, res) => {
 
     const conversationID = originalConversationID.toLowerCase();
 
-    let channel = await getChannelByName('1050431248163672106', conversationID);
+    let channel = await getChannelByName(process.env.SERVER_ID, conversationID);
     if (!channel) {
-        channel = await createChannelinServer('1050431248163672106', conversationID);
+        channel = await createChannelinServer(process.env.SERVER_ID, conversationID);
     }
 
     await sendMessageToChannel(channel.id, `<@${clyde_user_id}> ${message}`);
@@ -197,7 +197,7 @@ app.delete('/', async (req, res) => {
         return;
     }
 
-    let channel = await getChannelByName('1050431248163672106', conversationID);
+    let channel = await getChannelByName(process.env.SERVER_ID, conversationID);
     if (!channel) {
         res.json({
             error: 'Conversation does not exist',
