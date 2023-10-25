@@ -11,5 +11,6 @@ services:
       TOKEN: ${TOKEN}
       SERVER_ID: ${SERVER_ID}
       RATELIMIT_MAX_RPS: ${RATELIMIT_MAX_RPS}
+      CLYDE_CHANNEL_ID: ${CLYDE_CHANNEL_ID}
     ports:
       - 8080:8080
