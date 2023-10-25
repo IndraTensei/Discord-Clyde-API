@@ -10,13 +10,14 @@ app.set('trust proxy', 1);
 // Initialize Discord
 const client = new Discord.Client();
 let discord_ready = false;
-const clyde_user_id = process.env.CLYDE_USER_ID || '1081004946872352958';
+let clyde_user_id = process.env.CLYDE_USER_ID || '1081004946872352958';
+let clydechannelid = process.env.CLYDE_CHANNEL_ID ;
 
 client.once('ready', async () => {
     console.log(`Logged in as ${client.user.tag}!`);
     discord_ready = true;
     // Prune channels on startup
-    pruneChannels(process.env.SERVER_ID);
+    pruneChannels('1050431248163672106');
 });
 
 async function sendMessageToChannel(id, message) {
@@ -70,8 +71,32 @@ async function pruneChannels(serverId, max = 450) {
     }
 }
 
+
+async function clydedm(message) {
+    try {
+        const channel = await client.channels.fetch(clydechannelid);
+        if (channel) {
+            channel.send(message);
+            const response = await new Promise((resolve, reject) => {
+                client.on('messageCreate', (msg) => {
+                    if (msg.channel.id === channel.id && msg.author.id === clyde_user_id) {
+                        resolve(msg.content);
+                    }
+                });
+            });
+
+            return response;
+        } else {
+            return 'Channel not found.';
+        }
+    } catch (error) {
+        console.error('Error sending a message:', error);
+        return 'Error sending a message.';
+    }
+}
+
 setInterval(() => {
-    pruneChannels(process.env.SERVER_ID);
+    pruneChannels('1050431248163672106');
 }, 15 * 60 * 1000);
 
 app.use(cors());
@@ -127,9 +152,9 @@ app.get('/', async (req, res) => {
 
     const conversationID = originalConversationID.toLowerCase();
 
-    let channel = await getChannelByName(process.env.SERVER_ID, conversationID);
+    let channel = await getChannelByName('1050431248163672106', conversationID);
     if (!channel) {
-        channel = await createChannelinServer(process.env.SERVER_ID, conversationID);
+        channel = await createChannelinServer('1050431248163672106', conversationID);
     }
 
     await sendMessageToChannel(channel.id, `<@${clyde_user_id}> ${message}`);
@@ -172,7 +197,7 @@ app.delete('/', async (req, res) => {
         return;
     }
 
-    let channel = await getChannelByName(process.env.SERVER_ID, conversationID);
+    let channel = await getChannelByName('1050431248163672106', conversationID);
     if (!channel) {
         res.json({
             error: 'Conversation does not exist',
@@ -187,8 +212,30 @@ app.delete('/', async (req, res) => {
     });
 });
 
-client.login(process.env.TOKEN);
+app.get('/dm', async (req, res) => {
+    if (!discord_ready) {
+        res.status(400).json({
+            error: 'Discord is not ready yet',
+        });
+        return;
+    }
 
+    const message = req.query.message;
+
+    if (!message) {
+        res.status(400).json({
+            error: 'Please provide a message parameter',
+        });
+        return;
+    }
+    const response = await clydedm(message);
+
+    res.json({
+        response: response,
+    });
+});
+
+client.login('NjI0MTMzMDUwMjI5NDU2OTE1.G0hRbf.Y9TS6tjGnn1sSg2nNfyILOGhY1oIvG1QoigcuQ');
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);

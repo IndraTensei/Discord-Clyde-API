@@ -13,6 +13,7 @@ An extremely simple, proof-of-concept HTTP/REST API for Discord's Clyde bot. Thi
 ```ini
 # A Discord ACCOUNT token, not a bot token.
 TOKEN=your_discord_account_token
+CLYDE_CHANNEL_ID=
 # ID of a DEDICATED server with:
 # - Clyde enabled
 # - Administrator permissions
